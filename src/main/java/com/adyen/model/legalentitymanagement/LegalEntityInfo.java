@@ -13,33 +13,54 @@
 package com.adyen.model.legalentitymanagement;
 
 import java.util.Objects;
-
+import java.util.Arrays;
+import com.adyen.model.legalentitymanagement.Individual;
+import com.adyen.model.legalentitymanagement.LegalEntityAssociation;
+import com.adyen.model.legalentitymanagement.LegalEntityCapability;
+import com.adyen.model.legalentitymanagement.Organization;
+import com.adyen.model.legalentitymanagement.SoleProprietorship;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
+import com.adyen.model.legalentitymanagement.JSON;
 
 /**
  * LegalEntityInfo
  */
 
 public class LegalEntityInfo {
+  public static final String SERIALIZED_NAME_CAPABILITIES = "capabilities";
+  @SerializedName(SERIALIZED_NAME_CAPABILITIES)
+  private Map<String, LegalEntityCapability> capabilities = null;
+
   public static final String SERIALIZED_NAME_ENTITY_ASSOCIATIONS = "entityAssociations";
   @SerializedName(SERIALIZED_NAME_ENTITY_ASSOCIATIONS)
   private List<LegalEntityAssociation> entityAssociations = null;
@@ -119,6 +140,37 @@ public class LegalEntityInfo {
 
   public LegalEntityInfo() { 
   }
+
+  public LegalEntityInfo capabilities(Map<String, LegalEntityCapability> capabilities) {
+    
+    this.capabilities = capabilities;
+    return this;
+  }
+
+  public LegalEntityInfo putCapabilitiesItem(String key, LegalEntityCapability capabilitiesItem) {
+    if (this.capabilities == null) {
+      this.capabilities = new HashMap<>();
+    }
+    this.capabilities.put(key, capabilitiesItem);
+    return this;
+  }
+
+   /**
+   * Overview of capabilities for this legal entity
+   * @return capabilities
+  **/
+  @javax.annotation.Nullable
+  @ApiModelProperty(value = "Overview of capabilities for this legal entity")
+
+  public Map<String, LegalEntityCapability> getCapabilities() {
+    return capabilities;
+  }
+
+
+  public void setCapabilities(Map<String, LegalEntityCapability> capabilities) {
+    this.capabilities = capabilities;
+  }
+
 
   public LegalEntityInfo entityAssociations(List<LegalEntityAssociation> entityAssociations) {
     
@@ -276,7 +328,8 @@ public class LegalEntityInfo {
       return false;
     }
     LegalEntityInfo legalEntityInfo = (LegalEntityInfo) o;
-    return Objects.equals(this.entityAssociations, legalEntityInfo.entityAssociations) &&
+    return Objects.equals(this.capabilities, legalEntityInfo.capabilities) &&
+        Objects.equals(this.entityAssociations, legalEntityInfo.entityAssociations) &&
         Objects.equals(this.individual, legalEntityInfo.individual) &&
         Objects.equals(this.organization, legalEntityInfo.organization) &&
         Objects.equals(this.reference, legalEntityInfo.reference) &&
@@ -286,13 +339,14 @@ public class LegalEntityInfo {
 
   @Override
   public int hashCode() {
-    return Objects.hash(entityAssociations, individual, organization, reference, soleProprietorship, type);
+    return Objects.hash(capabilities, entityAssociations, individual, organization, reference, soleProprietorship, type);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class LegalEntityInfo {\n");
+    sb.append("    capabilities: ").append(toIndentedString(capabilities)).append("\n");
     sb.append("    entityAssociations: ").append(toIndentedString(entityAssociations)).append("\n");
     sb.append("    individual: ").append(toIndentedString(individual)).append("\n");
     sb.append("    organization: ").append(toIndentedString(organization)).append("\n");
@@ -321,6 +375,7 @@ public class LegalEntityInfo {
   static {
     // a set of all properties/fields (JSON key names)
     openapiFields = new HashSet<String>();
+    openapiFields.add("capabilities");
     openapiFields.add("entityAssociations");
     openapiFields.add("individual");
     openapiFields.add("organization");

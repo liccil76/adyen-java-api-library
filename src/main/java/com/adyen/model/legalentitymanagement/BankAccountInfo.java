@@ -13,23 +13,35 @@
 package com.adyen.model.legalentitymanagement;
 
 import java.util.Objects;
-
+import java.util.Arrays;
 import com.google.gson.TypeAdapter;
+import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.IOException;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
+import com.adyen.model.legalentitymanagement.JSON;
 
 /**
  * BankAccountInfo
@@ -279,8 +291,8 @@ public class BankAccountInfo {
    * The two-character [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code where the bank account is registered. For example, **NL**.
    * @return countryCode
   **/
-  @javax.annotation.Nonnull
-  @ApiModelProperty(required = true, value = "The two-character [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code where the bank account is registered. For example, **NL**.")
+  @javax.annotation.Nullable
+  @ApiModelProperty(value = "The two-character [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) country code where the bank account is registered. For example, **NL**.")
 
   public String getCountryCode() {
     return countryCode;
@@ -302,8 +314,8 @@ public class BankAccountInfo {
    * The account&#39;s three-character [ISO currency code](https://docs.adyen.com/development-resources/currency-codes). For example, **EUR**.
    * @return currencyCode
   **/
-  @javax.annotation.Nonnull
-  @ApiModelProperty(required = true, value = "The account's three-character [ISO currency code](https://docs.adyen.com/development-resources/currency-codes). For example, **EUR**.")
+  @javax.annotation.Nullable
+  @ApiModelProperty(value = "The account's three-character [ISO currency code](https://docs.adyen.com/development-resources/currency-codes). For example, **EUR**.")
 
   public String getCurrencyCode() {
     return currencyCode;
@@ -417,8 +429,6 @@ public class BankAccountInfo {
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
-    openapiRequiredFields.add("countryCode");
-    openapiRequiredFields.add("currencyCode");
   }
 
  /**
@@ -441,13 +451,6 @@ public class BankAccountInfo {
       for (Entry<String, JsonElement> entry : entries) {
         if (!BankAccountInfo.openapiFields.contains(entry.getKey())) {
           throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `BankAccountInfo` properties. JSON: %s", entry.getKey(), jsonObj.toString()));
-        }
-      }
-
-      // check to make sure all required properties/fields are present in the JSON string
-      for (String requiredField : BankAccountInfo.openapiRequiredFields) {
-        if (jsonObj.get(requiredField) == null) {
-          throw new IllegalArgumentException(String.format("The required field `%s` is not found in the JSON string: %s", requiredField, jsonObj.toString()));
         }
       }
       // validate the optional field accountNumber

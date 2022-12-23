@@ -13,33 +13,57 @@
 package com.adyen.model.legalentitymanagement;
 
 import java.util.Objects;
-
+import java.util.Arrays;
+import com.adyen.model.legalentitymanagement.DocumentReference;
+import com.adyen.model.legalentitymanagement.EntityReference;
+import com.adyen.model.legalentitymanagement.Individual;
+import com.adyen.model.legalentitymanagement.LegalEntityAssociation;
+import com.adyen.model.legalentitymanagement.LegalEntityCapability;
+import com.adyen.model.legalentitymanagement.Organization;
+import com.adyen.model.legalentitymanagement.SoleProprietorship;
+import com.adyen.model.legalentitymanagement.TransferInstrumentReference;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
+import com.adyen.model.legalentitymanagement.JSON;
 
 /**
  * LegalEntity
  */
 
 public class LegalEntity {
+  public static final String SERIALIZED_NAME_CAPABILITIES = "capabilities";
+  @SerializedName(SERIALIZED_NAME_CAPABILITIES)
+  private Map<String, LegalEntityCapability> capabilities = null;
+
   public static final String SERIALIZED_NAME_DOCUMENT_DETAILS = "documentDetails";
   @SerializedName(SERIALIZED_NAME_DOCUMENT_DETAILS)
   private List<DocumentReference> documentDetails = null;
@@ -74,7 +98,7 @@ public class LegalEntity {
 
   public static final String SERIALIZED_NAME_TRANSFER_INSTRUMENTS = "transferInstruments";
   @SerializedName(SERIALIZED_NAME_TRANSFER_INSTRUMENTS)
-  private List<EntityReference> transferInstruments = null;
+  private List<TransferInstrumentReference> transferInstruments = null;
 
   /**
    * The type of legal entity.   Possible values: **individual**, **organization**, or **soleProprietorship**.
@@ -143,6 +167,37 @@ public class LegalEntity {
     this();
     this.id = id;
   }
+
+  public LegalEntity capabilities(Map<String, LegalEntityCapability> capabilities) {
+    
+    this.capabilities = capabilities;
+    return this;
+  }
+
+  public LegalEntity putCapabilitiesItem(String key, LegalEntityCapability capabilitiesItem) {
+    if (this.capabilities == null) {
+      this.capabilities = new HashMap<>();
+    }
+    this.capabilities.put(key, capabilitiesItem);
+    return this;
+  }
+
+   /**
+   * Overview of capabilities for this legal entity
+   * @return capabilities
+  **/
+  @javax.annotation.Nullable
+  @ApiModelProperty(value = "Overview of capabilities for this legal entity")
+
+  public Map<String, LegalEntityCapability> getCapabilities() {
+    return capabilities;
+  }
+
+
+  public void setCapabilities(Map<String, LegalEntityCapability> capabilities) {
+    this.capabilities = capabilities;
+  }
+
 
   public LegalEntity documentDetails(List<DocumentReference> documentDetails) {
     
@@ -345,13 +400,13 @@ public class LegalEntity {
   }
 
 
-  public LegalEntity transferInstruments(List<EntityReference> transferInstruments) {
+  public LegalEntity transferInstruments(List<TransferInstrumentReference> transferInstruments) {
     
     this.transferInstruments = transferInstruments;
     return this;
   }
 
-  public LegalEntity addTransferInstrumentsItem(EntityReference transferInstrumentsItem) {
+  public LegalEntity addTransferInstrumentsItem(TransferInstrumentReference transferInstrumentsItem) {
     if (this.transferInstruments == null) {
       this.transferInstruments = new ArrayList<>();
     }
@@ -366,12 +421,12 @@ public class LegalEntity {
   @javax.annotation.Nullable
   @ApiModelProperty(value = "List of transfer instruments owned by the legal entity.")
 
-  public List<EntityReference> getTransferInstruments() {
+  public List<TransferInstrumentReference> getTransferInstruments() {
     return transferInstruments;
   }
 
 
-  public void setTransferInstruments(List<EntityReference> transferInstruments) {
+  public void setTransferInstruments(List<TransferInstrumentReference> transferInstruments) {
     this.transferInstruments = transferInstruments;
   }
 
@@ -409,7 +464,8 @@ public class LegalEntity {
       return false;
     }
     LegalEntity legalEntity = (LegalEntity) o;
-    return Objects.equals(this.documentDetails, legalEntity.documentDetails) &&
+    return Objects.equals(this.capabilities, legalEntity.capabilities) &&
+        Objects.equals(this.documentDetails, legalEntity.documentDetails) &&
         Objects.equals(this.documents, legalEntity.documents) &&
         Objects.equals(this.entityAssociations, legalEntity.entityAssociations) &&
         Objects.equals(this.id, legalEntity.id) &&
@@ -423,13 +479,14 @@ public class LegalEntity {
 
   @Override
   public int hashCode() {
-    return Objects.hash(documentDetails, documents, entityAssociations, id, individual, organization, reference, soleProprietorship, transferInstruments, type);
+    return Objects.hash(capabilities, documentDetails, documents, entityAssociations, id, individual, organization, reference, soleProprietorship, transferInstruments, type);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
     sb.append("class LegalEntity {\n");
+    sb.append("    capabilities: ").append(toIndentedString(capabilities)).append("\n");
     sb.append("    documentDetails: ").append(toIndentedString(documentDetails)).append("\n");
     sb.append("    documents: ").append(toIndentedString(documents)).append("\n");
     sb.append("    entityAssociations: ").append(toIndentedString(entityAssociations)).append("\n");
@@ -462,6 +519,7 @@ public class LegalEntity {
   static {
     // a set of all properties/fields (JSON key names)
     openapiFields = new HashSet<String>();
+    openapiFields.add("capabilities");
     openapiFields.add("documentDetails");
     openapiFields.add("documents");
     openapiFields.add("entityAssociations");
@@ -573,7 +631,7 @@ public class LegalEntity {
 
         // validate the optional field `transferInstruments` (array)
         for (int i = 0; i < jsonArraytransferInstruments.size(); i++) {
-          EntityReference.validateJsonObject(jsonArraytransferInstruments.get(i).getAsJsonObject());
+          TransferInstrumentReference.validateJsonObject(jsonArraytransferInstruments.get(i).getAsJsonObject());
         };
       }
       // ensure the field type can be parsed to an enum value
